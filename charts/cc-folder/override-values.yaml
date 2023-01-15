@@ -1,0 +1,69 @@
+# -- detailed description of the parameters: https://cloud.google.com/config-connector/docs/reference/resource-docs/resourcemanager/folder
+
+# -- Single folder name. If set, "folders" key has to be unset. 
+# name: "playground-folder"
+
+# -- Required if name is set. The folder's display name 
+# displayName: "playground-folder"
+
+# -- Optional. Labels for folders or shared by all projects under "projects" key
+labels:
+  labelKey: labelValue
+
+# -- Optional. Annotations for folders or shared by all projects under "projects" key
+annotations:
+  annotationKey: annotationValue
+
+# -- Optional. The organization that folder belongs to.
+# organizationRef:
+# -- Optional. Allowed value: The `name` field of an `Organization` resource.
+  # external: "342165950753"
+# -- Optional. Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+#   namespace: some-ns
+# -- Optional. Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+#   name: demo-org
+
+# -- Optional. The folder that this resource belongs to.
+# folderRef:
+# -- Optional. Allowed value: The `folderId` field of a `Folder` resource
+#   external: "123456789"
+# -- Optional. Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+#   namespace: some-ns
+# -- Optional. Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+#   name: demo-folder
+# -- Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+# resourceID: folderID
+
+# -- List of folders to create. If set, "name" key has to be unset.
+folders: 
+  - name: folder-alpha 
+    displayName: folder alpha
+    labels:
+      alphaKey: alphaValue
+    annotations:
+      alphaKey: alphaValue
+    organizationRef:
+      external: "342165950753"
+      # namespace: example-namespace
+      # name: example-org
+    # folderRef:
+    #   external: "123456789"
+    #   namespace: example-namespace
+    #   name: example-folder
+    # resourceID: folderID
+
+  - name: folder-beta
+    displayName: folder beta
+    labels:
+      betaKey: betaValue
+    annotations:
+      betaKey: betaValue
+    # organizationRef:
+    #   external: "342165950753"
+      # namespace: example-namespace
+      # name: example-org
+    folderRef:
+      external: "919230116508"
+      # namespace: example-namespace
+      # name: example-folder
+    # resourceID: folderID

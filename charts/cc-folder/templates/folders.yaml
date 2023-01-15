@@ -1,0 +1,49 @@
+{{- if and .Values.folders (not .Values.name) }}
+{{- range $folder := .Values.folders  }}
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  labels:
+  {{- include "cc-folder.labels" $ | nindent 4 }}
+	{{- if $folder.labels }}
+		{{- toYaml $folder.labels | nindent 4 }}
+  {{- end  }}
+	{{- if $.Values.labels }}
+		{{- toYaml $.Values.labels | nindent 4 }}
+  {{- end  }}
+  {{- if or $.Values.annotations $folder.annotations  }}
+  annotations:
+ 	{{- if $.Values.annotations }}
+		{{- toYaml $.Values.annotations | nindent 4 }}
+  {{- end  }}
+ 	{{- if $folder.annotations }}
+		{{- toYaml $folder.annotations | nindent 4 }}
+  {{- end  }}   
+  {{- end  }}
+  name: {{ $folder.name | quote }}
+spec:
+	{{- if $folder.displayName }}
+  displayName: {{ $folder.displayName | quote }}
+	{{- end }}
+	{{- if $folder.folderRef }}
+  folderRef:
+		{{- with $folder.folderRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil }}
+    namespace: {{ .namespace | default nil }}
+		{{- end }}
+	{{- end }}
+	{{- if $folder.organizationRef }}
+  organizationRef:
+	{{- with $folder.organizationRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil }}
+    namespace: {{ .namespace | default nil }}
+	{{- end }}
+	{{- end }}
+	{{- if $folder.resourceID }}
+  resourceID: {{ $folder.resourceID | toString | quote }}
+	{{- end }}
+{{- end  }}
+{{- end  }}

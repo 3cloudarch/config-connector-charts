@@ -5,7 +5,7 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   labels:
-  {{- include "cc-project.labels" $ | nindent 4 }}
+  {{- include "project-config-connector.labels" $ | nindent 4 }}
   {{- if $project.labels }}
     {{- toYaml $project.labels | nindent 4 }}
   {{- end  }}

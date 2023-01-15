@@ -1,0 +1,45 @@
+{{- if and .Values.name (not .Values.projects) }}
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  labels:
+  {{- include "cc-project.labels" . | nindent 4 }}
+    {{- if .Values.labels }}
+    {{- toYaml .Values.labels | nindent 4 }}
+  {{- end  }}
+  {{- with .Values.annotations  }}
+  annotations:
+    {{- toYaml . | nindent 4 }}  
+  {{- end  }}
+  name: {{ required "Projec name is required" .Values.name | toString | quote }}
+spec:
+  name: {{ default .Values.name .Values.projectName | toString | quote }}
+  {{- if .Values.billingAccountRef }}
+  billingAccountRef:
+    {{- with .Values.billingAccountRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil }}
+    namespace: {{ .namespace | default nil }}
+    {{- end }}
+    {{- end }}
+  {{- if .Values.folderRef }}
+  folderRef:
+    {{- with .Values.folderRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil }}
+    namespace: {{ .namespace | default nil }}
+    {{- end }}
+    {{- end }}
+  {{- if .Values.organizationRef }}
+  organizationRef:
+  {{- with .Values.organizationRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil }}
+    namespace: {{ .namespace | default nil }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.resourceID }}
+  resourceID: {{ .Values.resourceID | toString | quote }}
+  {{- end }}
+{{- end  }}

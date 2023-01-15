@@ -1,0 +1,85 @@
+# -- detailed description of the parameters: https://cloud.google.com/config-connector/docs/reference/resource-docs/resourcemanager/project
+
+# -- Single project and config connenctor resource name. If set, "projects" key has to be unset. 
+name: ""
+
+
+# -- Single projec name. Overrides "name" 
+# projectName: "example-project"
+
+# -- Optional. Labels for project or shared by all projects under "projects" key
+# labels:
+#   labelKey: labelValue
+
+# -- Optional. Annotations for project or shared by all projects under "projects" key
+# annotations:
+#   annotationKey: annotationValue
+
+# --  Billing account id attached to project
+# billingAccountRef:
+# -- Optional. Allowed value: The `name` field of a `BillingAccount` resource.
+#   external: "123456789"
+# -- Optional. Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+#   namespace: some-ns
+# -- Optional. Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+#   name: demo-billing-id
+
+
+# -- Optional. The organization that project belongs to.
+# organizationRef:
+# -- Optional. Allowed value: The `name` field of an `Organization` resource.
+#   external: "123456789"
+# -- Optional. Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+#   namespace: some-ns
+# -- Optional. Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+#   name: demo-org
+
+# -- Optional. The folder that this resource belongs to.
+# folderRef:
+# -- Optional. Allowed value: The `folderId` field of a `Folder` resource.
+#   external: "123456789"
+# -- Optional. Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+#   namespace: some-ns
+# -- Optional. Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+#   name: demo-folder
+
+# -- Optional. The projectId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+# resourceID: projectID
+
+# -- List of projects to create. If set, "name" key has to be unset.
+projects: {}
+# -- Field under each project in list are coresponding to above single project case.
+  # - name: project-alpha 
+  #   projectName: project alpha
+  #   labels:
+  #     alphaKey: alphaValue
+  #   annotations:
+  #     alphaKey: alphaValue
+  #   billingAccountRef:
+  #     external: "123456789"
+  #     namespace: example-namespace
+  #     name: example-org
+  #   organizationRef:
+  #     external: "123456789"
+  #     namespace: example-namespace
+  #     name: example-org
+  #   folderRef:
+  #     external: "123456789"
+  #     namespace: example-namespace
+  #     name: example-folder
+  #   resourceID: folderID
+
+  # - name: project-beta 
+  #   projectName: project alpha
+  #   labels:
+  #     betaKey: betaValue
+  #   annotations:
+  #     betaKey: betaValue
+  #   billingAccountRef:
+  #     external: "987654321"
+  #     namespace: example-namespace
+  #     name: example-org
+  #   organizationRef:
+  #     external: "987654321"
+  #     namespace: example-namespace
+  #     name: example-org

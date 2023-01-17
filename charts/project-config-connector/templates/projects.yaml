@@ -21,35 +21,35 @@ metadata:
     {{- toYaml $project.annotations | nindent 4 }}
   {{- end  }}   
   {{- end  }}
-  name: {{ required "Projec name is required" $name  | toString | quote }}
+  name: {{ required "Projec name is required" $name | quote }}
 spec:
-  name: {{ default $name $project.projectName | toString | quote }}
+  name: {{ default $name $project.projectName | quote }}
   {{- if $project.billingAccountRef }}
   billingAccountRef:
     {{- with $project.billingAccountRef }}
     external: {{ .external | default nil | quote }}
-    name: {{ .name | default nil }}
-    namespace: {{ .namespace | default nil }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
     {{- end }}
     {{- end }}
   {{- if $project.folderRef }}
   folderRef:
     {{- with $project.folderRef }}
     external: {{ .external | default nil | quote }}
-    name: {{ .name | default nil }}
-    namespace: {{ .namespace | default nil }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
     {{- end }}
   {{- end }}
   {{- if $project.organizationRef }}
   organizationRef:
   {{- with $project.organizationRef }}
     external: {{ .external | default nil | quote }}
-    name: {{ .name | default nil }}
-    namespace: {{ .namespace | default nil }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
   {{- end }}
   {{- end }}
   {{- if $project.resourceID }}
-  resourceID: {{ $project.resourceID | toString | quote }}
+  resourceID: {{ $project.resourceID | quote }}
   {{- end }}
 {{- end  }}
 {{- end  }}

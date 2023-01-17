@@ -21,29 +21,27 @@ metadata:
     {{- toYaml $folder.annotations | nindent 4 }}
   {{- end  }}   
   {{- end  }}
-  name: {{ $name | quote }}
+  name: {{ required "Folder name is required" $name | quote }}
 spec:
-  {{- if $folder.displayName }}
-  displayName: {{ $folder.displayName | quote }}
-  {{- end }}
+  displayName: {{ required "Folder displayName is required" $folder.displayName | quote }}
   {{- if $folder.folderRef }}
   folderRef:
     {{- with $folder.folderRef }}
     external: {{ .external | default nil | quote }}
-    name: {{ .name | default nil }}
-    namespace: {{ .namespace | default nil }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
     {{- end }}
   {{- end }}
   {{- if $folder.organizationRef }}
   organizationRef:
   {{- with $folder.organizationRef }}
     external: {{ .external | default nil | quote }}
-    name: {{ .name | default nil }}
-    namespace: {{ .namespace | default nil }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
   {{- end }}
   {{- end }}
   {{- if $folder.resourceID }}
-  resourceID: {{ $folder.resourceID | toString | quote }}
+  resourceID: {{ $folder.resourceID | quote }}
   {{- end }}
 {{- end  }}
 {{- end  }}

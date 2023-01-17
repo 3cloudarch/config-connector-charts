@@ -34,10 +34,10 @@ name: ""
 # -- Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 # resourceID: folderID
 
-# -- List of folders to create. If set, "name" key has to be unset.
+# -- Map of folders to create. If set, "name" key has to be unset.
 folders: {}
-# -- Field under each folder in list are coresponding to above single folder case.
-  # - name: folder-alpha 
+# -- The following structure allows to create multiple folders where 2nd lvl keys represent "name".  Fields under each folder name are coresponding to above single folder case.
+  # folder-alpha:
   #   displayName: folder alpha
   #   labels:
   #     alphaKey: alphaValue
@@ -52,8 +52,7 @@ folders: {}
   #     namespace: example-namespace
   #     name: example-folder
   #   resourceID: folderID
-
-  # - name: folder-beta
+  # folder-beta:
   #   displayName: folder beta
   #   labels:
   #     betaKey: betaValue

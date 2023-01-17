@@ -1,5 +1,5 @@
 {{- if and .Values.projects (not .Values.name) }}
-{{- range $project := .Values.projects  }}
+{{- range $name, $project := .Values.projects  }}
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
@@ -21,9 +21,9 @@ metadata:
     {{- toYaml $project.annotations | nindent 4 }}
   {{- end  }}   
   {{- end  }}
-  name: {{ required "Projec name is required" $project.name  | toString | quote }}
+  name: {{ required "Projec name is required" $name  | toString | quote }}
 spec:
-  name: {{ default $project.name $project.projectName | toString | quote }}
+  name: {{ default $name $project.projectName | toString | quote }}
   {{- if $project.billingAccountRef }}
   billingAccountRef:
     {{- with $project.billingAccountRef }}

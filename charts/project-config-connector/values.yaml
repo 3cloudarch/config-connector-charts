@@ -46,10 +46,11 @@ name: ""
 # -- Optional. The projectId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
 # resourceID: projectID
 
-# -- List of projects to create. If set, "name" key has to be unset.
+# -- Map of projects to create. If set, "name" key has to be unset.
 projects: {}
 # -- Field under each project in list are coresponding to above single project case.
-  # - name: project-alpha 
+#-- The following structure allows to create multiple projects where 2nd lvl keys represent "name".  Fields under each project name are coresponding to above single project case.
+  # project-alpha:
   #   projectName: project alpha
   #   labels:
   #     alphaKey: alphaValue
@@ -69,7 +70,7 @@ projects: {}
   #     name: example-folder
   #   resourceID: folderID
 
-  # - name: project-beta 
+  # project-beta:
   #   projectName: project alpha
   #   labels:
   #     betaKey: betaValue

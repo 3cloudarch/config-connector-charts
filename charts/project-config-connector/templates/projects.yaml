@@ -1,0 +1,55 @@
+{{- if and .Values.projects (not .Values.name) }}
+{{- range $name, $project := .Values.projects  }}
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  labels:
+  {{- include "project-config-connector.labels" $ | nindent 4 }}
+  {{- if $project.labels }}
+    {{- toYaml $project.labels | nindent 4 }}
+  {{- end  }}
+  {{- if $.Values.labels }}
+    {{- toYaml $.Values.labels | nindent 4 }}
+  {{- end  }}
+  {{- if or $.Values.annotations $project.annotations  }}
+  annotations:
+  {{- if $.Values.annotations }}
+    {{- toYaml $.Values.annotations | nindent 4 }}
+  {{- end  }}
+  {{- if $project.annotations }}
+    {{- toYaml $project.annotations | nindent 4 }}
+  {{- end  }}   
+  {{- end  }}
+  name: {{ required "Projec name is required" $name | quote }}
+spec:
+  name: {{ default $name $project.projectName | quote }}
+  {{- if $project.billingAccountRef }}
+  billingAccountRef:
+    {{- with $project.billingAccountRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
+    {{- end }}
+    {{- end }}
+  {{- if $project.folderRef }}
+  folderRef:
+    {{- with $project.folderRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
+    {{- end }}
+  {{- end }}
+  {{- if $project.organizationRef }}
+  organizationRef:
+  {{- with $project.organizationRef }}
+    external: {{ .external | default nil | quote }}
+    name: {{ .name | default nil | quote }}
+    namespace: {{ .namespace | default nil | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if $project.resourceID }}
+  resourceID: {{ $project.resourceID | quote }}
+  {{- end }}
+{{- end  }}
+{{- end  }}

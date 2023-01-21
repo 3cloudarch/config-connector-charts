@@ -86,7 +86,7 @@ projects: {}
   #       disableDependentServices: "false"
   #     list:
   #     - pubsub.googleapis.com 
-  #     resourceID: folderID
+  #   resourceID: folderID
 
   # project-beta:
   #   projectName: project alpha

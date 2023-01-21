@@ -1,0 +1,12 @@
+name: example-project-123
+billingAccountRef:
+  external: "00000-11111-55555" #billingID
+organizationRef:
+  external:"123123123123" #OrgId
+services:
+  # protection:
+  #   deletionPolicy: "none"
+  #   disableDependentServices: "false"
+  list:
+    - pubsub.googleapis.com
+    - cloudkms.googleapis.com

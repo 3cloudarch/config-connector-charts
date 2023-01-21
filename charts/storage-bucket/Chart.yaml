@@ -1,0 +1,19 @@
+apiVersion: v2
+name: storage-bucket-config-connector
+description: GCP Storage Bucket
+type: application
+version: 0.0.1
+
+keywords:
+  - bucket
+  - storage
+  - GCP
+  - config connector
+
+home: 3cloudarch.com
+sources:
+  - https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket
+
+maintainers: 
+  - name: Karol Cienkosz
+    email: karol@cienkosz.com

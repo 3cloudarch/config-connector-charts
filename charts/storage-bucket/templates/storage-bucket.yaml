@@ -1,0 +1,210 @@
+{{- range $name, $bucket := .Values.buckets  }}
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  labels:
+  {{- include "storage-bucket-connector.labels" $ | nindent 4 }}
+  {{- if $bucket.labels }}
+    {{- toYaml $bucket.labels | nindent 4 }}
+  {{- end  }}
+  {{- if $.Values.labels }}
+    {{- toYaml $.Values.labels | nindent 4 }}
+  {{- end  }}
+  {{- if or $.Values.annotations $bucket.annotations  }}
+  annotations:
+  {{- if $.Values.annotations }}
+    {{- toYaml $.Values.annotations | nindent 4 }}
+  {{- end  }}
+  {{- if $bucket.annotations }}
+    {{- toYaml $bucket.annotations | nindent 4 }}
+  {{- end  }}   
+  {{- end  }}
+  name: {{ required "Bucket name is required" $name | quote }}
+spec:
+  {{- if or  $bucket.spec.autoclass $.Values.default.spec.autoclass }}
+  autoclass:
+    {{- if $bucket.spec.autoclass }}
+    enabled: {{ required ".autoclass.enabled is required" $bucket.spec.autoclass.enabled }}
+    {{- else }}
+    enabled: {{ required ".autoclass.enabled is required" $.Values.default.spec.autoclass.enabled }}
+    {{- end }}
+  {{- end }}
+  bucketPolicyOnly: {{ $bucket.spec.bucketPolicyOnly | default $.Values.default.spec.bucketPolicyOnly }}
+  {{- if or $bucket.spec.cors $.Values.default.spec.cors }}
+  cors:
+  {{- if $bucket.spec.cors }}
+  {{- range $cor := $bucket.spec.cors  }}
+  - maxAgeSeconds: {{ int $cor.maxAgeSeconds }}
+    {{- if $cor.method }}
+    method:
+    {{- toYaml $cor.method | nindent 4 }}
+    {{- end  }}
+    {{- if $cor.origin }}
+    origin:
+    {{- toYaml $cor.origin | nindent 4 }}
+    {{- end  }}
+    {{- if $cor.responseHeader }}
+    responseHeader:
+    {{- toYaml $cor.responseHeader | nindent 4 }}
+    {{- end  }}
+  {{- end  }}
+  {{- end  }}
+ {{- if $.Values.default.spec.cors}}
+  {{- range $cor := $.Values.default.spec.cors }}
+  - maxAgeSeconds: {{ int $cor.maxAgeSeconds }}
+    {{- if $cor.method }}
+    method:
+    {{- toYaml $cor.method | nindent 4 }}
+    {{- end  }}
+    {{- if $cor.origin }}
+    origin:
+    {{- toYaml $cor.origin | nindent 4 }}
+    {{- end  }}
+    {{- if $cor.responseHeader }}
+    responseHeader:
+    {{- toYaml $cor.responseHeader | nindent 4 }}
+    {{- end  }}
+  {{- end  }}
+  {{- end  }}
+  {{- end  }}
+  {{- if or  $bucket.spec.customPlacementConfig $.Values.default.spec.customPlacementConfig }}
+  {{- if $bucket.spec.customPlacementConfig }}
+  customPlacementConfig:
+    dataLocations:
+    {{- toYaml $bucket.spec.customPlacementConfig.dataLocations | nindent 4 }}
+  {{- end  }}
+  {{- if $.Values.default.spec.customPlacementConfig }}
+  customPlacementConfig:
+    dataLocations:
+    {{- toYaml $.Values.default.spec.customPlacementConfig.dataLocations | nindent 4 }}
+  {{- end  }}
+  {{- end  }}
+  {{- if or ( eq $bucket.spec.defaultEventBasedHold false ) ( eq $bucket.spec.defaultEventBasedHold true )  }}
+  defaultEventBasedHold: {{ $bucket.spec.defaultEventBasedHold }}
+  {{- else if or ( eq $.Values.default.spec.defaultEventBasedHold false ) ( eq $.Values.default.spec.defaultEventBasedHold true ) }}
+  defaultEventBasedHold: {{ $.Values.default.spec.defaultEventBasedHold }}
+  {{- end }}
+  {{- if or $bucket.spec.encryption $.Values.default.spec.encryption }}
+  {{- if or $bucket.spec.encryption }}
+  encryption:
+    kmsKeyRef:
+      {{- with $bucket.spec.encryption.kmsKeyRef }}
+      external: {{ .external| default nil | quote }}
+      name: {{ .name | default nil | quote }}
+      namespace: {{ .namespace | default nil | quote }}
+      {{- end  }}
+  {{- else  }}
+  encryption:
+    kmsKeyRef:
+      {{- with $.Values.default.spec.encryption.kmsKeyRef }}
+      external: {{ .external | default nil | quote }}
+      name: {{ .name | default nil | quote }}
+      namespace: {{ .namespace | default nil | quote }}
+      {{- end  }}
+  {{- end  }}
+  {{- end  }}
+  {{- if or $bucket.spec.lifecycleRule $.Values.default.spec.lifecycleRule }}
+  lifecycleRule:
+  {{- if $.Values.default.spec.lifecycleRule }}
+  {{- range $lifecycleRule := $.Values.default.spec.lifecycleRule  }}
+  - action:
+      storageClass: {{ $lifecycleRule.action.storageClass | default nil | quote }}
+      type: {{ $lifecycleRule.action.type  | default nil | quote }}
+    condition:
+      age: {{ int $lifecycleRule.condition.age | default nil }}
+      createdBefore: {{ $lifecycleRule.condition.createdBefore | default nil | quote }}
+      customTimeBefore: {{ $lifecycleRule.condition.customTimeBefore | default nil | quote }}
+      daysSinceCustomTime: {{ int $lifecycleRule.condition.daysSinceCustomTime | default nil }}
+      daysSinceNoncurrentTime: {{ int $lifecycleRule.condition.daysSinceNoncurrentTime | default nil }}
+      {{- if $lifecycleRule.condition.matchesPrefix }}
+      matchesPrefix:
+      {{- toYaml $lifecycleRule.condition.matchesPrefix | nindent 6 }}
+      {{- end  }}
+      {{- if $lifecycleRule.condition.matchesStorageClass }}
+      matchesStorageClass:
+      {{- toYaml $lifecycleRule.condition.matchesStorageClass | nindent 6 }}
+      {{- end  }}
+      {{- if $lifecycleRule.condition.matchesSuffix }}
+      matchesSuffix:
+      {{- toYaml $lifecycleRule.condition.matchesSuffix | nindent 6 }}
+      {{- end  }}
+      noncurrentTimeBefore: {{ $lifecycleRule.condition.noncurrentTimeBefore | default nil | quote }}
+      numNewerVersions: {{ int $lifecycleRule.condition.numNewerVersions | default nil }}
+      withState: {{ $lifecycleRule.condition.withState | default nil | quote }}
+  {{- end  }}
+  {{- end  }}
+  {{- if $bucket.spec.lifecycleRule }}
+  {{- range $lifecycleRule := $bucket.spec.lifecycleRule  }}
+  - action:
+      storageClass: {{ $lifecycleRule.action.storageClass | default nil | quote }}
+      type: {{ $lifecycleRule.action.type  | default nil | quote }}
+    condition:
+      age: {{ int $lifecycleRule.condition.age | default nil }}
+      createdBefore: {{ $lifecycleRule.condition.createdBefore | default nil | quote }}
+      customTimeBefore: {{ $lifecycleRule.condition.customTimeBefore | default nil | quote }}
+      daysSinceCustomTime: {{ int $lifecycleRule.condition.daysSinceCustomTime | default nil }}
+      daysSinceNoncurrentTime: {{ int $lifecycleRule.condition.daysSinceNoncurrentTime | default nil }}
+      {{- if $lifecycleRule.condition.matchesPrefix }}
+      matchesPrefix:
+      {{- toYaml $lifecycleRule.condition.matchesPrefix | nindent 6 }}
+      {{- end  }}
+      {{- if $lifecycleRule.condition.matchesStorageClass }}
+      matchesStorageClass:
+      {{- toYaml $lifecycleRule.condition.matchesStorageClass | nindent 6 }}
+      {{- end  }}
+      {{- if $lifecycleRule.condition.matchesSuffix }}
+      matchesSuffix:
+      {{- toYaml $lifecycleRule.condition.matchesSuffix | nindent 6 }}
+      {{- end  }}
+      noncurrentTimeBefore: {{ $lifecycleRule.condition.noncurrentTimeBefore | default nil | quote }}
+      numNewerVersions: {{ int $lifecycleRule.condition.numNewerVersions | default nil }}
+      withState: {{ $lifecycleRule.condition.withState | default nil | quote }}
+  {{- end  }}
+  {{- end  }}
+  {{- end  }}
+  location: {{ $bucket.spec.location | default $.Values.default.spec.location }}
+  {{- if or $bucket.spec.logging $.Values.default.spec.logging }}
+  logging:
+    {{- if $bucket.spec.logging  }}
+    logBucket: {{ $bucket.spec.logging.logBucket | default nil | quote }}
+    logObjectPrefix: {{ $bucket.spec.logging.logObjectPrefix | default nil | quote }}
+    {{- else  }}
+    logBucket: {{ $.Values.default.spec.logging.logBucket | default nil | quote }}
+    logObjectPrefix: {{ $.Values.default.spec.logging.logObjectPrefix | default nil | quote }}
+    {{- end  }}
+  {{- end  }}
+  publicAccessPrevention: {{ $bucket.spec.publicAccessPrevention | default $.Values.default.spec.publicAccessPrevention }}
+  requesterPays: {{ $bucket.spec.requesterPays | default $.Values.default.spec.requesterPays  }}
+  resourceID: {{ $bucket.spec.resourceID | default nil | quote }}
+  {{- if or $bucket.spec.retentionPolicy $.Values.default.spec.retentionPolicy }}
+  retentionPolicy:
+    {{- if $bucket.spec.retentionPolicy  }}
+    isLocked: {{ $bucket.spec.retentionPolicy.isLocked | default nil }}
+    retentionPeriod: {{ int $bucket.spec.retentionPolicy.retentionPeriod | default nil }}
+    {{- else  }}
+    isLocked: {{ $.Values.default.spec.retentionPolicy.isLocked | default nil }}
+    retentionPeriod: {{ $.Values.default.spec.retentionPolicy.retentionPeriod | default nil }}
+    {{- end  }}
+  {{- end  }}
+  storageClass: {{ $bucket.spec.storageClass | default $.Values.default.spec.storageClass | quote }}
+  uniformBucketLevelAccess: {{ $bucket.spec.uniformBucketLevelAccess | default $.Values.default.spec.uniformBucketLevelAccess }}
+  {{- if or $bucket.spec.versioning $.Values.default.spec.versioning }}
+  versioning:
+  {{- if $bucket.spec.versioning }}
+    enabled: {{ $bucket.spec.versioning.enabled }}
+  {{- else }}
+    enabled: {{ $.Values.default.spec.versioning.enabled }}
+  {{- end }}
+  {{- end }}
+  {{- if or $bucket.spec.website $.Values.default.spec.website }}
+  website:
+    {{- if $bucket.spec.website  }}
+    mainPageSuffix: {{ $bucket.spec.website.mainPageSuffix | default nil | quote }}
+    notFoundPage: {{ $bucket.spec.website.notFoundPage | default nil | quote }}
+    {{- else  }}
+    mainPageSuffix: {{ $.Values.default.spec.website.mainPageSuffix | default nil | quote }}
+    notFoundPage: {{ $.Values.default.spec.website.notFoundPage | default nil | quote }}
+    {{- end  }}
+  {{- end  }}
+{{- end  }}

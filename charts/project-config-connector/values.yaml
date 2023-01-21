@@ -46,6 +46,18 @@ name: ""
 # -- Optional. The projectId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
 # resourceID: projectID
 
+# -- Optional. Option to enable service APIs in cleated single project
+# services:
+# -- Optional. You can controll if disable API if it will be removed from list. 
+  # protection:
+#-- use the deletion policy of abandon to ensure that the pubsub service remains enabled when this resource is deleted.
+  #   deletionPolicy: "none"
+#-- this is unnecessary with the deletion-policy of 'abandon', but useful if the abandon policy is removed.
+  #   disableDependentServices: "false"
+# -- Required. List of APIs
+  # list:
+  #   - pubsub.googleapis.com
+
 # -- Map of projects to create. If set, "name" key has to be unset.
 projects: {}
 # -- Field under each project in list are coresponding to above single project case.
@@ -68,7 +80,13 @@ projects: {}
   #     external: "123456789"
   #     namespace: example-namespace
   #     name: example-folder
-  #   resourceID: folderID
+  #   services:
+  #     protection:
+  #       deletionPolicy: "none"
+  #       disableDependentServices: "false"
+  #     list:
+  #     - pubsub.googleapis.com 
+  #     resourceID: folderID
 
   # project-beta:
   #   projectName: project alpha

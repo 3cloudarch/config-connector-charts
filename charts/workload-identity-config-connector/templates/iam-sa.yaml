@@ -1,0 +1,31 @@
+{{- if .Values.iamSA.create }}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  {{- if or .Values.iamSA.annotations .Values.iamSA.projectID  }}
+  annotations:
+  {{- if .Values.iamSA.projectID  }}
+    cnrm.cloud.google.com/project-id: {{ .Values.iamSA.projectID | quote }}
+  {{- end }}
+  {{- with .Values.iamSA.annotations  }}
+    {{- toYaml . | nindent 4 }}  
+  {{- end  }}
+  {{- end  }}
+  {{- with .Values.iamSA.labels  }}
+  labels:
+    {{- toYaml . | nindent 4 }}  
+  {{- end  }}
+  name: {{ .Values.iamSA.name |  replace "_" "-" | replace "." "-" | trunc 253 | lower | toString  }}
+spec:
+  {{- with .Values.iamSA.spec  }}
+  {{- if .description }}
+  description: {{ .description | toString | trunc 256  }}
+  {{- end }}
+  disabled: {{ .disabled | default false }}
+  displayName: {{ .displayName | default $.Values.iamSA.name |  replace "_" "-" | replace "." "-" | trunc 253 | lower | toString  }}
+  {{- if .resourceID }}
+  resourceID: {{ .resourceID |  replace "_" "-" | replace "." "-" | trunc 253 | lower | toString  }}
+  {{- end }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,20 @@
+apiVersion: v2
+name: workload-identity-config-connector
+description: Chart to creata GCP service account, K8s service account and all required resurces to enable workload identity
+type: application
+version: 0.0.1
+
+keywords:
+  - kubernetes
+  - GCP
+  - config connector
+  - workload identity
+  - service account
+
+home: 3cloudarch.com
+sources:
+  - https://cloud.google.com/config-connector/docs/reference/resource-docs/resourcemanager/project
+
+maintainers: 
+  - name: Karol Cienkosz
+    email: karol@cienkosz.com

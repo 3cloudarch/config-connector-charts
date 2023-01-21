@@ -1,0 +1,10 @@
+kubernetesSA:
+ create: False
+ name: example-sa
+ namespace: playground
+ projectID: kubernetes-project-001
+iamSA:
+  create: False
+  name: example-sa
+  external: example-sa@example-project-id.iam.gserviceaccount.com
+  projectID: example-gcp-project-001

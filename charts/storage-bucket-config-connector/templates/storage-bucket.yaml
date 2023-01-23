@@ -34,36 +34,36 @@ spec:
   {{- if or $bucket.spec.cors $.Values.default.spec.cors }}
   cors:
   {{- if $bucket.spec.cors }}
-  {{- range $cor := $bucket.spec.cors  }}
-  - maxAgeSeconds: {{ int $cor.maxAgeSeconds }}
-    {{- if $cor.method }}
+  {{- range $cors := $bucket.spec.cors  }}
+  - maxAgeSeconds: {{ int $cors.maxAgeSeconds }}
+    {{- if $cors.method }}
     method:
-    {{- toYaml $cor.method | nindent 4 }}
+    {{- toYaml $cors.method | nindent 4 }}
     {{- end  }}
-    {{- if $cor.origin }}
+    {{- if $cors.origin }}
     origin:
-    {{- toYaml $cor.origin | nindent 4 }}
+    {{- toYaml $cors.origin | nindent 4 }}
     {{- end  }}
-    {{- if $cor.responseHeader }}
+    {{- if $cors.responseHeader }}
     responseHeader:
-    {{- toYaml $cor.responseHeader | nindent 4 }}
+    {{- toYaml $cors.responseHeader | nindent 4 }}
     {{- end  }}
   {{- end  }}
   {{- end  }}
  {{- if $.Values.default.spec.cors}}
-  {{- range $cor := $.Values.default.spec.cors }}
-  - maxAgeSeconds: {{ int $cor.maxAgeSeconds }}
-    {{- if $cor.method }}
+  {{- range $cors := $.Values.default.spec.cors }}
+  - maxAgeSeconds: {{ int $cors.maxAgeSeconds }}
+    {{- if $cors.method }}
     method:
-    {{- toYaml $cor.method | nindent 4 }}
+    {{- toYaml $cors.method | nindent 4 }}
     {{- end  }}
-    {{- if $cor.origin }}
+    {{- if $cors.origin }}
     origin:
-    {{- toYaml $cor.origin | nindent 4 }}
+    {{- toYaml $cors.origin | nindent 4 }}
     {{- end  }}
-    {{- if $cor.responseHeader }}
+    {{- if $cors.responseHeader }}
     responseHeader:
-    {{- toYaml $cor.responseHeader | nindent 4 }}
+    {{- toYaml $cors.responseHeader | nindent 4 }}
     {{- end  }}
   {{- end  }}
   {{- end  }}

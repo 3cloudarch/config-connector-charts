@@ -42,4 +42,28 @@ spec:
   {{- if .Values.resourceID }}
   resourceID: {{ .Values.resourceID | quote }}
   {{- end }}
+
+{{- if $.Values.services }}
+{{- range $service := .Values.services.list  }}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    {{- if $.Values.services.protection }}
+    cnrm.cloud.google.com/deletion-policy: {{ $.Values.services.protection.deletionPolicy | default "abandon"  | quote }}
+    cnrm.cloud.google.com/disable-dependent-services: {{ $.Values.services.protection.disableDependentServices | default "false" | quote }}
+    {{- else }}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+    {{- end }}
+  name: {{ printf "%s-%s" $service $.Values.name | replace "_" "-" | replace "." "-" | trunc 64  }}
+spec:
+  resourceID: {{ $service }}
+  projectRef:
+    name: {{ $.Values.name | quote }}
+
 {{- end  }}
+{{- end  }}
+{{- end  }}
+

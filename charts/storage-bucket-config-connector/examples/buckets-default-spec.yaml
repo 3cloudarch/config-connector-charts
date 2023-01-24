@@ -1,0 +1,35 @@
+labels:
+  common-label: common
+annotations:
+  common-annotation: common
+  cnrm.cloud.google.com/project-id: example-project-id
+default:
+  spec:
+    lifecycleRule:
+    - action:
+        type: Delete
+      condition:
+        age: 7
+    storageClass: NEARLINE
+    location: europe-west4
+    versioning:
+      enabled: True
+
+
+buckets:
+  my-first-bucketa-1234567823423:
+    spec: {}
+  my-second-bucket-1234567asdf3:
+    spec: {}
+    
+IAM:
+  storage.objectCreator:
+    - user:user@example.com
+    - serviceAccount:serviceaccount@example.com
+  storage.objectViewer:
+    - user:user@example.com
+  storage.objectAdmin:
+    - user:user@example.com
+    - serviceAccount:serviceaccount@example.com
+  storage.admin:
+    - serviceAccount:serviceaccount@example.com

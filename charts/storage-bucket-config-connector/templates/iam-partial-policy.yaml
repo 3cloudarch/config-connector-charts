@@ -1,0 +1,28 @@
+{{- range $name, $bucket := .Values.buckets  }}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: {{ printf "%s-common" $name  | replace "_" "-" | replace "." "-" | trunc 64  }}
+spec:
+  resourceRef:
+    kind: StorageBucket
+    name: {{ $name }}
+  bindings:
+    {{- range $role, $accounts := $.Values.IAM  }}
+    - role: {{ printf "roles/%s" $role }}
+      members:
+        {{- range $account := $accounts }}
+        - member: {{ $account }}
+        {{- end  }}
+    {{- end  }}
+    {{ if $bucket.IAM }}
+    {{- range $role, $accounts := $bucket.IAM  }}
+    - role: {{ printf "roles/%s" $role }}
+      members:
+        {{- range $account := $accounts }}
+        - member: {{ $account }}
+        {{- end  }}
+    {{- end  }}
+    {{- end  }}
+{{- end  }}

@@ -1,0 +1,69 @@
+labels:
+  common-label: common
+annotations:
+  common-annotation: common
+  cnrm.cloud.google.com/project-id: example-project-id
+default:
+  spec:
+    lifecycleRule:
+    - action:
+        type: Delete
+      condition:
+        age: 7
+    storageClass: NEARLINE
+    location: europe-west4
+    versioning:
+      enabled: True
+
+
+buckets:
+  my-first-bucketa-1234567823423:
+    labels:
+      bucket: with-spec
+    annotations:
+      bucket: with-spec
+    IAM:
+      storage.objectCreator:
+        - serviceAccount:serviceAccount:serviceaccount@example.com
+      storage.objectViewer:
+        - serviceAccount:serviceAccount:serviceaccount@example.com
+    spec:
+      location: europe-west4
+      cors:
+        - origin: ["http://example.appspot.com"]
+          responseHeader: ["Content-Type"]
+          method: ["GET", "HEAD", "DELETE"]
+          maxAgeSeconds: 3600
+      defaultEventBasedHold: False
+      lifecycleRule:
+        - action:
+            type: Delete
+          condition:
+            age: 7
+      logging:
+        logBucket: logbucket-bucket-name
+        logObjectPrefix: prefix-string
+      publicAccessPrevention: inherited
+      resourceID: bucket-with-spec-123456789
+      retentionPolicy:
+        isLocked: True
+        retentionPeriod: 3155760000
+      storageClass: NEARLINE
+      versioning:
+        enabled: False
+      website:
+        mainPageSuffix: page-suffix
+        notFoundPage: notFound.html
+  
+  my-second-bucket-1234567asdf3:
+    spec: {}
+    
+IAM:
+  storage.objectCreator:
+    - user:user@example.com
+  storage.objectViewer:
+    - user:user@example.com
+  storage.objectAdmin:
+    - user:user@example.com
+  storage.admin:
+    - user:user@example.com

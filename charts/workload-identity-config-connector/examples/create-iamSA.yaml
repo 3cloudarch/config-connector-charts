@@ -1,0 +1,12 @@
+kubernetesSA:
+ create: False
+ name: example-sa
+ namespace: playground
+ projectID: kubernetes-project-001
+iamSA:
+  create: True
+  name: example-sa
+  projectID: example-gcp-project-001
+  spec:
+    description: example-app IAM service account
+

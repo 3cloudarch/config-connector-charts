@@ -1,0 +1,31 @@
+#-- section about k8s SA
+kubernetesSA:
+#-- Required. to create new k8s service account set to True
+  # create: boolean
+#-- Required. k8s SA name
+  # name: string
+#-- Optional. namesapce where k8s SA exists or has to be created. If not set, chart namespace is set
+  # namespace: string
+#-- Required. project-id where k8s is deployed
+  # projectID: string
+
+#-- section about IAM SA
+iamSA:
+#-- Required. to create new iam service account set to True
+  # create: boolean
+#-- Required. k8s SA name
+  # name: string
+#-- Required*. full service account email. Required when SA already exists
+  # external: string
+#-- Optional. project-id where iam SA should be created. If not set, default from config-connector/namespace is used
+  # projectID: string
+#-- Optional. iam SA specification
+  # spec:
+#-- Optional. iam SA description
+  #   description: string
+#-- Optional. Set if SA should be disables
+  #   disabled: boolean
+#-- Optional. Set SA display name
+  #   displayName: string
+#-- Optional. The accountId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+  #   resourceID: string
